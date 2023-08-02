@@ -1,0 +1,21 @@
+# fly.toml app configuration file generated for notes-struct on 2023-07-22T16:38:16+03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "notes-struct"
+primary_region = "lhr"
+
+[env]
+  PORT = "8080"
+
+[experimental]
+  auto_rollback = true
+
+[[services]]
+  http_checks = []
+  internal_port = 8080
+  processes = ["app"]
+
+[http_service]
+  internal_port = 8080
