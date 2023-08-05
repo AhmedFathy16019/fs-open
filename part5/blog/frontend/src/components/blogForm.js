@@ -1,13 +1,28 @@
-const Blog = ({blog}) => (
-  <div>
-    {blog.title} {blog.author}
-  </div>  
-)
+import { useState } from 'react'
 
-const BlogForm = ({blogs, addBlog, logout, name, title, author, url, changeTitle, changeAuthor, changeUrl}) => {
+const BlogForm = ({createBlog, logout, name }) => {
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
+
+  const addBlog = (event) => {
+    event.preventDefault()
+    
+    const newBlog = {
+      title,
+      author,
+      url
+    }
+
+    createBlog(newBlog)
+
+    setTitle('')
+    setAuthor('')
+    setUrl('')
+  } 
+
   return (
     <div>
-      <h2>blogs</h2>
       <p>{`${name} logged in`}</p>
       <button onClick={logout}>logout</button>
 
@@ -18,7 +33,7 @@ const BlogForm = ({blogs, addBlog, logout, name, title, author, url, changeTitle
           <input
             type="text"
             value={title}
-            onChange={({target}) => changeTitle(target.value)}
+            onChange={({target}) => setTitle(target.value)}
           />
         </div>
 
@@ -27,7 +42,7 @@ const BlogForm = ({blogs, addBlog, logout, name, title, author, url, changeTitle
           <input
             type="text"
             value={author}
-            onChange={({target}) => changeAuthor(target.value)}
+            onChange={({target}) => setAuthor(target.value)}
           />
         </div>
 
@@ -36,16 +51,12 @@ const BlogForm = ({blogs, addBlog, logout, name, title, author, url, changeTitle
           <input
             type="text"
             value={url}
-            onChange={({target}) => changeUrl(target.value)}
+            onChange={({target}) => setUrl(target.value)}
           />
         </div>
 
         <button type="submit">create</button>
       </form>
-
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
     </div>
   )
 }

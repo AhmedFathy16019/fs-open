@@ -26,7 +26,9 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
         user: request.user._id
     })
 
-    const result = await blog.save()
+    await blog.save()
+    
+    const result = await Blog.findOne({ title: blog.title }).populate('user', { username: 1, name: 1 })
 
     request.user.blogs = request.user.blogs.concat(result._id)
     await request.user.save()
@@ -42,6 +44,8 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) =
 
     if (blog.user.toString() === request.user._id.toString()){
         await Blog.findByIdAndRemove(id)
+        request.user.blogs = request.user.blogs.filter(blog => blog !== id)
+        await request.user.save()
         response.status(204).end()
     } else {
         response.status(401).json({ error: 'invalid token, not authorized to remove blog' })
@@ -52,10 +56,9 @@ blogsRouter.put('/:id', async (request, response) => {
     const id = request.params.id
 
     const updatedBlog = request.body
-    
-    const result = await Blog.findByIdAndUpdate(id, updatedBlog, {new:true, runValidators:true, context:'query'})
 
-    response.json(result)
+    const result = await Blog.findByIdAndUpdate(id, updatedBlog, {new:true, runValidators:true, context:'query'})
+    response.json(result)    
 })
 
 module.exports = blogsRouter

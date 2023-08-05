@@ -1,6 +1,22 @@
-const LoginForm = ({onSubmit, changeUsername, changePassword, username, password}) => {
+import { useState } from "react"
+
+const LoginForm = ({loginService}) => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
+  const login = (event) => {
+    event.preventDefault()
+
+    const credentials = { username, password }
+
+    loginService(credentials)
+    
+    setUsername('')
+    setPassword('')
+  }  
+
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={login}>
       
       <div>
         username
@@ -8,7 +24,7 @@ const LoginForm = ({onSubmit, changeUsername, changePassword, username, password
             type='text'
             value={username}
             name='Username'
-            onChange={({target}) => changeUsername(target.value)} 
+            onChange={({target}) => setUsername(target.value)} 
           />
       </div>
       
@@ -18,7 +34,7 @@ const LoginForm = ({onSubmit, changeUsername, changePassword, username, password
             type='text'
             value={password}
             name='Password'
-            onChange={({target}) => changePassword(target.value)}
+            onChange={({target}) => setPassword(target.value)}
           />
       </div>
      

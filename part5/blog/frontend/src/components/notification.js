@@ -3,8 +3,6 @@ const Notification = ({isError, message}) => {
         return null
     }
 
-    console.log('entered notification');
-
     if (isError) {
         return (
             <div className="error">
