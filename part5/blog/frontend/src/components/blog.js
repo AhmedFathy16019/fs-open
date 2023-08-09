@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 const Blog = ({ blog, like, remove }) => {
     const [full, setFull] = useState(false)
-
+    console.log('blog inside component :>> ', blog);
     const toggleFull = () => {
         setFull(!full)
     }
@@ -36,15 +36,15 @@ const Blog = ({ blog, like, remove }) => {
             <div>
                 {blog.title} - {blog.author}
             </div>
-            <button onClick={toggleFull}>{full ? 'hide' : 'view'}</button>
+            <button className='toggle-details' onClick={toggleFull}>{full ? 'hide' : 'view'}</button>
             {full
                 ?   <div>
                     <p>{blog.url}</p>
-                    <p>{blog.likes}</p>
-                    <button onClick={increaseLikes}>like</button>
+                    <p className='blog-likes'>{blog.likes}</p>
+                    <button onClick={increaseLikes} className='like-button'>like</button>
                     <p>{blog.user.name}</p>
                     {currentUser.username === blog.user.username
-                        ? <button onClick={deleteBlog}>remove</button>
+                        ? <button onClick={deleteBlog} className='delete-button'>remove</button>
                         : null
                     }
                 </div>

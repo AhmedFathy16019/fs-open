@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import './app.css'
 import BlogForm from './components/blogForm'
-import Blogs from './components/blog'
+import Blogs from './components/blogs'
 import LoginForm from './components/loginForm'
 import Notification from './components/notification'
 import Togglable from './components/togglable'
@@ -21,6 +21,16 @@ const App = () => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
     )  
+  }, [])
+
+  useEffect(() => {
+    const loggedUserJSON = localStorage.getItem('loggedBlogappUser')
+    console.log('loggedUserJSON :>> ', loggedUserJSON);
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
   }, [])
 
   const handleLogin = async (event) => {
@@ -57,6 +67,7 @@ const App = () => {
       blogService.setToken(user.token)
 
       const returnedBlog = await blogService.create(newBlog)
+      console.log('returnedBlog :>> ', returnedBlog);
       setBlogs(blogs.concat(returnedBlog))
       
       setIsError(false)
@@ -97,27 +108,36 @@ const App = () => {
       setTimeout(() => setMessage(null), 3000)
     }
   }
-  
+  console.log('blogs :>> ', blogs);
   return (
     <>
       <Notification isError={isError} message={message}/>
-      {user === null
-        ? <LoginForm
-            onSubmit={handleLogin}
-            username={username}
-            changeUsername={setUsername}
-            password={password}
-            changePassword={setPassword}
-          />
-        : <Togglable buttonLabel='new blog' ref={blogFormRef}>
-            <BlogForm
-              createBlog={addBlog}
-              logout={handleLogout}
-              name={user.name}
+      {
+        user === null
+          ? <LoginForm
+              onSubmit={handleLogin}
+              username={username}
+              changeUsername={setUsername}
+              password={password}
+              changePassword={setPassword}
             />
-          </Togglable>
+          : <Togglable buttonLabel='new blog' ref={blogFormRef}>
+              <BlogForm
+                createBlog={addBlog}
+                logout={handleLogout}
+                name={user.name}
+              />
+            </Togglable>
       }
-      {user ? <Blogs blogs={blogs} like={increaseLikes} remove={removeBlog} /> : null}
+      {
+        user && blogs.length > 0 
+          ? <Blogs 
+              blogs={blogs}
+              like={increaseLikes}
+              remove={removeBlog}
+            /> 
+          : null
+      }
     </>
   )
 }

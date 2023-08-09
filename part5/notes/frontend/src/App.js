@@ -34,6 +34,8 @@ const App = () => {
     }
   }, [])
 
+  console.log('user :>> ', window.localStorage.getItem('loggedNoteappUser'));
+
   const addNote = (noteObject) => {
     noteFormRef.current.toggleVisible()
     noteService
@@ -83,11 +85,14 @@ const App = () => {
   }  
 
   const noteForm = () => (
-    <Togglable buttonLabel="new note" ref={noteFormRef}>
-      <NoteForm 
-        createNote={addNote}
-      />
-    </Togglable> 
+    <div>
+      <h3>{user.name} logged in</h3>
+      <Togglable buttonLabel="new note" ref={noteFormRef}>
+        <NoteForm 
+          createNote={addNote}
+        />
+      </Togglable> 
+    </div>
   )
 
   return (

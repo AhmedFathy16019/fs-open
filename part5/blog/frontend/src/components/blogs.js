@@ -2,8 +2,10 @@ import PropTypes from 'prop-types'
 import Blog from './blog'
 
 const Blogs = ({ blogs, like, remove }) => {
-    blogs.sort((a, b) => b.likes - a.likes)
-
+    console.log('blogs inside list :>> ', blogs)
+    if (blogs.length > 1) {
+        blogs.sort((a, b) => b.likes - a.likes)
+    }
     return (
         <div>
             <h2>blogs</h2>
