@@ -1,11 +1,10 @@
 import { useDispatch } from 'react-redux'
-import { changeFilter } from '../reducers/filterReducer'
 
 const Filter = () => {
     const dispatch = useDispatch()
 
     const handleChange = (event) => {
-        dispatch(changeFilter(event.target.value))
+        dispatch({type: 'filter/changeFilter', payload: event.target.value})
     }
 
     const style = {
