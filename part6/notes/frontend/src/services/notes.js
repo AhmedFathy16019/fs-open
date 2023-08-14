@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = '/api/notes'
+const baseUrl = 'http://localhost:3001/notes'
 
 let token = null
 
@@ -12,11 +12,17 @@ const getAll = async () => {
   return response.data
 }
 
-const create = async newObject => {
-  const config = {
-    headers: { Authorization: token }
-  }
-  const response = await axios.post(baseUrl, newObject, config)
+// const create = async newObject => {
+//   const config = {
+//     headers: { Authorization: token }
+//   }
+//   const response = await axios.post(baseUrl, newObject, config)
+//   return response.data
+// }
+
+const create = async (content) => {
+  const object = { content, important: false }
+  const response = await axios.post(baseUrl, object)
   return response.data
 }
 
