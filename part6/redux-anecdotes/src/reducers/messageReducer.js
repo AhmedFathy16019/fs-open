@@ -6,16 +6,22 @@ const messageSlice = createSlice({
     name: 'message',
     initialState,
     reducers: {
-        changeMessage(state, action) {
-            const message = action.payload
-            return message
+        changeState(state, action) {
+            const newState = action.payload
+            return newState
         },
-        removeMessage(state, action) {
-            return null
-        }
     }
 })
 
-export const { changeMessage, removeMessage } = messageSlice.actions
+export const { changeState } = messageSlice.actions
+
+export const setNotification = (message, seconds) => {
+    return dispatch => {
+        dispatch(changeState(message))
+        setTimeout(() => {
+            dispatch(changeState(null))
+        }, seconds * 1000)
+    }    
+}
 
 export default messageSlice.reducer

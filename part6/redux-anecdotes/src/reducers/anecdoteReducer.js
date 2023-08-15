@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import anecdoteService from '../services/anecdote'
 
 const anecdotesAtStart = [
   'If it hurts, do it more often',
@@ -25,35 +26,45 @@ const anecdoteSlice = createSlice({
   name: 'anecdotes',
   initialState,
   reducers: {
-    voteFor(state, action) {
-      const id = action.payload
-      const anecdoteToChange = state.find(a => a.id === id)
-
-      const changedAnecdote = { ...anecdoteToChange, votes: anecdoteToChange.votes+1 }
-      return state.map(a => a.id === id ? changedAnecdote : a)
-    },
-
-    createAnecdote(state, action) {
-      const content = action.payload
-      const newAnecdote = {
-        content,
-        id: getId(),
-        votes: 0
-      }
-
-      state.push(newAnecdote)
-    },
-
     appendAnecdote(state, action) {
       state.push(action.payload)
     },
 
     setAnecdotes(state,action) {
       return action.payload
+    },
+    
+    modifyAnecdote(state, action) {
+      const changedAnecdote = action.payload
+      return state.map(a => a.id === changedAnecdote.id ? changedAnecdote : a)
     }
   }
 })
 
-export const { voteFor, createAnecdote, appendAnecdote  , setAnecdotes } = anecdoteSlice.actions
+export const { appendAnecdote  , setAnecdotes, modifyAnecdote } = anecdoteSlice.actions
+
+export const initializeAnecdotes = () => {
+  return async dispatch => {
+    const anecdotes = await anecdoteService.getAll()
+    dispatch(setAnecdotes(anecdotes))
+  }
+}
+
+export const createAnecdote = (content) => {
+  return async dispatch => {
+    const newAnecdote = await anecdoteService.create(content)
+    dispatch(appendAnecdote(newAnecdote))
+  }
+}
+
+export const voteFor = (id) => {
+  return async (dispatch, getState) => {
+    const state = getState().anecdotes
+    const anecdoteToChange = state.find(a => a.id === id)      
+    const changedAnecdote = { ...anecdoteToChange, votes: anecdoteToChange.votes+1 }
+    const retAnecdote = await anecdoteService.update(changedAnecdote)
+    dispatch(modifyAnecdote(retAnecdote))
+  }
+}
 
 export default anecdoteSlice.reducer

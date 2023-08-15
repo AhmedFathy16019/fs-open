@@ -33,7 +33,12 @@
     {
       "content": "sending anecdote to the backend",
       "id": "16777",
-      "votes": 0
+      "votes": 4
+    },
+    {
+      "content": "using redux thunk for async action creators could work better",
+      "id": "10242",
+      "votes": 1
     }
   ]
 }
