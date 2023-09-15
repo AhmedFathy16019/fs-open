@@ -1,14 +1,34 @@
 {
-    "notes": [
-        {
-            "content": "the app state is in redux store",
-            "important": true,
-            "id": 1
-        },
-        {
-            "content": "state changes are made with actions",
-            "important": false,
-            "id": 2
-        }
-    ]
+  "notes": [
+    {
+      "content": "the app state is in redux store",
+      "important": true,
+      "id": 1
+    },
+    {
+      "content": "state changes are made with actions",
+      "important": false,
+      "id": 2
+    },
+    {
+      "content": "a new note created through useMutation",
+      "important": true,
+      "id": 3
+    },
+    {
+      "content": "mutation note",
+      "important": false,
+      "id": 4
+    },
+    {
+      "content": "now the queries are updated after note creation",
+      "important": true,
+      "id": 5
+    },
+    {
+      "content": "using manual query updates",
+      "important": false,
+      "id": 6
+    }
+  ]
 }
