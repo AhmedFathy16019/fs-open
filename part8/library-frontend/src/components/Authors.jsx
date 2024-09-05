@@ -10,7 +10,12 @@ const Authors = ({ show }) => {
   const result = useQuery(ALL_AUTHORS);
 
   const [ editAuthor, response ] = useMutation(EDIT_AUTHOR, {
-    refetchQueries: [ { query: ALL_AUTHORS } ]
+    refetchQueries: [ { query: ALL_AUTHORS } ],
+    onError: (error) => {
+      console.log(error);
+      setName(authors[0].name);
+      setBorn('');
+    }
   });
 
   useEffect(() => {
@@ -24,7 +29,7 @@ const Authors = ({ show }) => {
 
     editAuthor({ variables: { name, setBornTo: parseInt(born) } });
     
-    setName('');
+    setName(authors[0].name);
     setBorn('');
   };  
 
@@ -59,8 +64,11 @@ const Authors = ({ show }) => {
       </table>
 
       <h1>Set birth year</h1>
-      <label htmlFor="name">name</label>
-      <input type="text" value={name} placeholder="name" name="name" onChange={(event) => setName(event.target.value)}/>
+      <select onChange={(event) => setName(event.target.value)} value={name}>
+        {authors.map((a) => (
+          <option key={a.name} value={a.name}>{a.name}</option>
+        ))}
+      </select>
       <br/>
       <label htmlFor="born">born</label>
       <input type="number" value={born} placeholder="born" name="born" onChange={(event) => setBorn(event.target.value)}/>
