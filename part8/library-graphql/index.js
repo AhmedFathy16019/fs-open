@@ -103,7 +103,8 @@ const resolvers = {
   Author: {
     bookCount: async ({ _id }) => {
       return Book.countDocuments({ author: _id });
-    }
+    },
+    id: ({ _id }) => _id,
   },
 
   Query: {
@@ -113,7 +114,7 @@ const resolvers = {
     
     allBooks: async (root, args) => {
       if (Object.keys(args).length === 0) {
-        return Book.find({})
+        return Book.find({}).populate('author');
       }
 
       let retBooks = [];
