@@ -138,7 +138,7 @@ const resolvers = {
           extensions: {
             code: 'BAD_USER_INPUT',
             invalidArgs: args.name,
-            error
+            error,
           }
         })
       }
