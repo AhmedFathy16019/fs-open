@@ -4,8 +4,11 @@ import { useMemo, useState } from "react";
 
 
 const Books = ({ show }) => {
-  const { loading, data } = useQuery(ALL_BOOKS)
   const [filter, setFilter] = useState(null);
+
+  const { loading, data } = useQuery(ALL_BOOKS, {
+    variables: filter ? { genre: filter } : {},
+  });
 
   const genres = useMemo(() => {
     if (data) {
@@ -15,14 +18,6 @@ const Books = ({ show }) => {
       return null;
     }
   }, [data]);
-
-  const booksFiltered = useMemo(() => {
-    if (filter) {
-      return data?.allBooks.filter(b => b.genres.includes(filter))
-    } else {
-      return data?.allBooks
-    }
-  }, [filter, data]);
 
   if (!show) {
     return null
@@ -43,7 +38,7 @@ const Books = ({ show }) => {
             <th>Author Name</th>
             <th>Published</th>
           </tr>
-          {booksFiltered.map((a) => (
+          {data.allBooks.map((a) => (
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>
