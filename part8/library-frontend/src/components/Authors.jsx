@@ -6,23 +6,35 @@ import { useEffect, useState } from "react";
 const Authors = ({ show }) => {
   const [name, setName] = useState('');
   const [born, setBorn] = useState('');
+  const [authors, setAuthors] = useState([]);
 
   const result = useQuery(ALL_AUTHORS);
 
   const [ editAuthor, response ] = useMutation(EDIT_AUTHOR, {
-    refetchQueries: [ { query: ALL_AUTHORS } ],
     onError: (error) => {
       console.log(error);
       setName(authors[0].name);
       setBorn('');
+    },
+    update: (store, response) => {
+      store.updateQuery({ query: ALL_AUTHORS}, ({ allAuthors }) => {
+        return {
+          allAuthors: allAuthors.map((author) => author.name === name ? { ...author, born: parseInt(born) } : author)
+        }
+      });
     }
   });
 
   useEffect(() => {
-    if (response?.data?.editAuthor === null) {
+    if (response.data?.editAuthor === null) {
       console.log('author not found');
     }
-  }, [response]);
+
+    if (result.data?.allAuthors.length > 0) {
+      setAuthors(result.data.allAuthors);
+      setName(result.data.allAuthors[0].name);
+    }
+  }, [response.data, result.data, setName]);
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -40,8 +52,6 @@ const Authors = ({ show }) => {
   if (result.loading) {
     return <div>loading...</div>
   }
-
-  const authors = result.data.allAuthors;
 
   return (
     <div>
