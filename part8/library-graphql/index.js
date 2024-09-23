@@ -199,11 +199,13 @@ const resolvers = {
         })
       }
 
-      return await Author.findOneAndUpdate(
+      const updatedAuthor = await Author.findOneAndUpdate(
         { name: args.name },
         { born: args.setBornTo },
         { new: true }
       );
+
+      return updatedAuthor;
     },
 
     createUser: async (root, args) => {
@@ -248,6 +250,7 @@ const resolvers = {
 
       const userForToken = {
         username: user.username,
+        favoriteGenre: user.favoriteGenre,
         id: user._id,
       }
 

@@ -24,9 +24,6 @@ const Recommendations = ({ show }) => {
         return <div>Getting your favorite books data ...</div>;
     }
 
-    console.log('data :>> ', data);
-    console.log('dataBooks :>> ', dataBooks);
-
     return (
         <div>
             <h2>Recommendations</h2>
