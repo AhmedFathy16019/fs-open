@@ -5,13 +5,18 @@ const jwt = require('jsonwebtoken')
 const Author = require('./models/author')
 const Book = require('./models/book')
 const User = require('./models/user')
+const { getBookCounts } = require('./bookCounts')
 
 const pubsub = new PubSub();
+
+
 
 const resolvers = {
     Author: {
         bookCount: async ({ _id }) => {
-            return Book.countDocuments({ author: _id });
+            const bookCounts = await getBookCounts();
+
+            return bookCounts[_id] || 0;
         },
         id: ({ _id }) => _id,
     },

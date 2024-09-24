@@ -13,9 +13,11 @@ const jwt = require('jsonwebtoken')
 const typeDefs = require('./schema')
 const resolvers = require('./resolvers')
 const User = require('./models/user')
+const Book = require('./models/book')
 
 const mongoose = require('mongoose')
 mongoose.set('strictQuery', false)
+mongoose.set('debug', true)
 
 require('dotenv').config()
 const MONGODB_URI = process.env.MONGODB_URI
