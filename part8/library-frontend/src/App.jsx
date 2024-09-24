@@ -6,7 +6,9 @@ import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import LoginForm from "./components/LoginForm";
 import Recommendations from "./components/Recommendations";
+
 import { BOOK_ADDED } from "./queries";
+import { updateCache } from "./utilities";
 
 const App = () => {
   const [page, setPage] = useState("authors");
@@ -20,9 +22,13 @@ const App = () => {
   };
 
   useSubscription(BOOK_ADDED, {
-    onData: ({ data }) => {
-      console.log('data :>> ', data);
-      window.alert(`New book added: ${data.data.bookAdded.title}`);
+    onData: ({ data, client }) => {
+      const newBook = data.data.bookAdded;
+
+      console.log('newBook :>> ', newBook);
+      window.alert(`New book added: ${newBook.title}`);
+
+      updateCache(client.cache, newBook);
     }
   })
 
