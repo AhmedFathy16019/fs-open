@@ -25,13 +25,13 @@ const parseArguments = (args: string[]): exerciseValues => {
         return {
             target: Number(target),
             dailyExerciseHours: dailyExerciseHours.map(hours => Number(hours))
-        }
+        };
     } else {
         throw new Error('Provided values were not numbers!');
     }
-}
+};
 
-const calculateExercise = (dailyExerciseHours: number[], target: number): exerciseCalculatorResults => {
+export const calculateExercise = (dailyExerciseHours: number[], target: number): exerciseCalculatorResults => {
     const trainingDays = dailyExerciseHours.filter(hours => hours > 0).length;
     const average = dailyExerciseHours.reduce((a, b) => a + b, 0) / dailyExerciseHours.length;
     const rating = (average >= target) 
@@ -50,8 +50,8 @@ const calculateExercise = (dailyExerciseHours: number[], target: number): exerci
         ratingDescription,
         target,
         average
-    }
-}
+    };
+};
 
 try {
     const { target, dailyExerciseHours } = parseArguments(process.argv);
