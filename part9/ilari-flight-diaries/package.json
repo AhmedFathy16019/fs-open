@@ -2,10 +2,10 @@
   "name": "ilari-flight-diaries",
   "version": "1.0.0",
   "description": "fs-open part 9 project",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
     "start": "node build/index.js",
-    "dev": "ts-node-dev index.ts",
+    "dev": "ts-node-dev src/index.ts",
     "lint": "eslint .",
     "tsc": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
