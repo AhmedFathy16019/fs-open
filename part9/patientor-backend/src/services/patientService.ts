@@ -1,16 +1,22 @@
 import patientsData from '../../data/patients';
-import { NewPatient, NonSensitivePatient, Patient } from '../types';
+import { Gender, NewPatient, NonSensitivePatient, Patient } from '../types';
 import { v1 as uuid } from 'uuid';
+import { z } from 'zod';
+
 
 const getNonSensitivePatients = (): NonSensitivePatient[] => {
     return patientsData.map(
-        ({ id, name, dateOfBirth, gender, occupation }) => ({
-            id,
-            name,
-            dateOfBirth,
-            gender,
-            occupation
-        })
+        ({ id, name, dateOfBirth, gender, occupation }) => {
+            const genderParsed = z.nativeEnum(Gender).parse(gender);
+
+            return {
+                id,
+                name,
+                dateOfBirth,
+                gender: genderParsed,
+                occupation
+            };
+        }
     );
 };
 
