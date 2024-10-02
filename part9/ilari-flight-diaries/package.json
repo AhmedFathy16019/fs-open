@@ -1,0 +1,28 @@
+{
+  "name": "ilari-flight-diaries",
+  "version": "1.0.0",
+  "description": "fs-open part 9 project",
+  "main": "index.ts",
+  "scripts": {
+    "start": "node build/index.js",
+    "dev": "ts-node-dev index.ts",
+    "lint": "eslint .",
+    "tsc": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ahmed Fathy",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.11.1",
+    "@stylistic/eslint-plugin": "^2.8.0",
+    "@types/eslint__js": "^8.42.3",
+    "@types/express": "^5.0.0",
+    "eslint": "^9.11.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.6.2",
+    "typescript-eslint": "^8.8.0"
+  },
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}
