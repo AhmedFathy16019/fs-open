@@ -34,7 +34,7 @@ function App() {
     }).catch((error) => {
       if (axios.isAxiosError(error)) {
         console.log('error.response :>> ', error.response);
-        setErrorMessage(error.response?.data || 'Unknown error');
+        setErrorMessage(error.response?.data?.error || 'Unknown error');
       } else {
         console.error(error);
       }
@@ -46,34 +46,42 @@ function App() {
       <h1>Add new entry</h1>
       <form onSubmit={diaryCreation}>
         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-        <div style={{flex: 'row'}}>
+        <div>
           <p>date</p>
-          <input type="text" 
+          <input type="date" 
             placeholder="Date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
           />
         </div>
 
-        <div style={{flex: 'row'}}>
+        <div>
           <p>visibility</p>
-          <input type="text" 
-            placeholder="Visibility"
-            value={visibility}
-            onChange={(e) => setVisibility(e.target.value)}
-          />
+
+          great <input type="radio" name="visibility" onChange={() => setVisibility('great')} checked={visibility === 'great'}/>
+          
+          good <input type="radio" name="visibility" onChange={() => setVisibility('good')} checked={visibility === 'good'}/>
+          
+          ok <input type="radio" name="visibility" onChange={() => setVisibility('ok')} checked={visibility === 'ok'}/>
+          
+          poor <input type="radio" name="visibility" onChange={() => setVisibility('poor')} checked={visibility === 'poor'}/>
         </div>
 
-        <div style={{flex: 'row'}}>
+        <div>
           <p>weather</p>
-          <input type="text" 
-            placeholder="Weather"
-            value={weather}
-            onChange={(e) => setWeather(e.target.value)}
-          />
+          
+          sunny <input type="radio" name="weather" onChange={() => setWeather('sunny')} checked={weather === 'sunny'}/>
+
+          rainy <input type="radio" name="weather" onChange={() => setWeather('rainy')} checked={weather === 'rainy'}/>
+
+          cloudy <input type="radio" name="weather" onChange={() => setWeather('cloudy')} checked={weather === 'cloudy'}/>
+
+          stormy <input type="radio" name="weather" onChange={() => setWeather('stormy')} checked={weather === 'stormy'}/>
+
+          windy <input type="radio" name="weather" onChange={() => setWeather('windy')} checked={weather === 'windy'}/>
         </div>
 
-        <div style={{flex: 'row'}}>
+        <div>
           <p>comment</p>
           <input type="text" 
             placeholder="Comment"
