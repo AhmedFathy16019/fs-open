@@ -27,10 +27,15 @@ const errorMiddleware = (error: unknown, _req: Request, res: Response, next: Nex
     }
 };
 
-router.post('/', newPatientParser, (req: Request<unknown, unknown, NewPatient>, res: Response<Patient>) => {
+router.post('/', newPatientParser, (req: Request<unknown, unknown, NewPatient>, res: Response<NonSensitivePatient>) => {
     const newPatient = patientService.createNewPatient(req.body);
     
     res.status(200).json(newPatient);
+});
+
+router.get('/:id', (req: Request<{ id: string }>, res: Response<Patient | undefined>) => {
+    const patient = patientService.getPatientById(req.params.id);
+    res.send(patient);
 });
 
 router.use(errorMiddleware);
