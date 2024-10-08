@@ -1,4 +1,4 @@
-import { TextField, Grid, Button, Typography } from "@mui/material";
+import { TextField, Grid, Button, Typography, Select, FormControl, InputLabel, MenuItem } from "@mui/material";
 import { Error } from "@mui/icons-material";
 import patientService from "../services/patients";
 import { EntryWithoutId, HealthCheckRating } from "../types";
@@ -10,19 +10,24 @@ const EntryForm: React.FC<{ patientId: string }> = ({ patientId }) => {
     const [ date, setDate ] = useState('');
     const [ specialist, setSpecialist ] = useState('');
     const [ healthCheckRating, setHealthCheckRating ] = useState('');
-    const [ diagnosisCodes, setDiagnosisCodes ] = useState('');
+    const [ diagnosisCodes, setDiagnosisCodes ] = useState<string[]>([]);
+    const [ type, setType ] = useState('HealthCheck');
+    const [ dischargeDate, setDischargeDate ] = useState('');
+    const [ dischargeCriteria, setDischargeCriteria ] = useState('');
+    const [ employerName, setEmployerName ] = useState('');
+    const [ sickLeaveStartDate, setSickLeaveStartDate ] = useState('');
+    const [ sickLeaveEndDate, setSickLeaveEndDate ] = useState('');
     const [ error, setError ] = useState('');
 
     const onSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
 
-        const diagnosesCodesArray = diagnosisCodes.split(',').map(code => code.trim());
         const newEntry: EntryWithoutId = {
             description,
             date,
             specialist,
             healthCheckRating: Number(healthCheckRating) as HealthCheckRating,
-            diagnosisCodes: diagnosesCodesArray,
+            diagnosisCodes,
             type: "HealthCheck",
         };
 
@@ -52,7 +57,7 @@ const EntryForm: React.FC<{ patientId: string }> = ({ patientId }) => {
         setDate('');
         setSpecialist('');
         setHealthCheckRating('');
-        setDiagnosisCodes('');
+        setDiagnosisCodes([]);
     };
 
     return (
@@ -67,6 +72,21 @@ const EntryForm: React.FC<{ patientId: string }> = ({ patientId }) => {
             }
             <form style={{ border: '1px dotted', padding: '15px', gap: '15px', display: 'flex', flexDirection: 'column'}}>
                 <Typography variant="h5">New HealthCheck entry</Typography>
+                
+                <FormControl fullWidth>
+                    <InputLabel id="entry-type-label">Type</InputLabel>
+                    <Select
+                        labelId="entry-type-label"
+                        value={type}
+                        onChange={e => setType(e.target.value)}
+                        label="Type"
+                    >
+                        <MenuItem value="HealthCheck">Health Check</MenuItem>
+                        <MenuItem value="Hospital">Hospital</MenuItem>
+                        <MenuItem value="OccupationalHealthcare">Occupational Healthcare</MenuItem>
+                    </Select>
+                </FormControl>
+
 
                 <TextField
                     label="Description"
@@ -77,9 +97,13 @@ const EntryForm: React.FC<{ patientId: string }> = ({ patientId }) => {
 
                 <TextField
                     label="Date"
+                    type="date"
                     value={date}
                     onChange={e => setDate(e.target.value)}
                     fullWidth
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
                 />
 
                 <TextField
@@ -89,19 +113,86 @@ const EntryForm: React.FC<{ patientId: string }> = ({ patientId }) => {
                     fullWidth
                 />
 
-                <TextField
-                    label="HealthCheckRating"
-                    value={healthCheckRating}
-                    onChange={e => setHealthCheckRating(e.target.value)}
-                    fullWidth
-                />
+                <FormControl fullWidth>
+                    <InputLabel id="diagnosis-codes-label">Diagnosis codes</InputLabel>
+                    <Select
+                        labelId="diagnosis-codes-label"
+                        value={diagnosisCodes}
+                        onChange={e => setDiagnosisCodes(e.target.value as string[])}
+                        label="Diagnosis codes"
+                        multiple
+                    >
+                        <MenuItem value="M24.2">M24.2</MenuItem>
+                        <MenuItem value="M51.2">M51.2</MenuItem>
+                        <MenuItem value="M54.2">M54.2</MenuItem>
+                        <MenuItem value="M67.2">M67.2</MenuItem>
+                    </Select>
+                </FormControl>
+                    
 
-                <TextField
-                    label="Diagnosis codes"
-                    value={diagnosisCodes}
-                    onChange={e => setDiagnosisCodes(e.target.value)}
-                    fullWidth
-                />
+                { type === "HealthCheck" && 
+                    <TextField
+                        label="HealthCheckRating"
+                        value={healthCheckRating}
+                        onChange={e => setHealthCheckRating(e.target.value)}
+                        fullWidth
+                    />
+                }
+
+                { type === "Hospital" &&
+                    <>
+                        <TextField
+                            label="Discharge date"
+                            type="date"
+                            value={dischargeDate}
+                            onChange={e => setDischargeDate(e.target.value)}
+                            fullWidth
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                        
+                        <TextField
+                            label="Discharge criteria"
+                            value={dischargeCriteria}
+                            onChange={e => setDischargeCriteria(e.target.value)}
+                            fullWidth
+                        />
+                    </>
+                }
+
+                { type === "OccupationalHealthcare" &&
+                    <>
+                        <TextField
+                            label="Employer name"
+                            value={employerName}
+                            onChange={e => setEmployerName(e.target.value)}
+                            fullWidth
+                        />
+
+                        <TextField
+                            label="Sick leave start date"
+                            type="date"
+                            value={sickLeaveStartDate}
+                            onChange={e => setSickLeaveStartDate(e.target.value)}
+                            fullWidth
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+
+                        <TextField
+                            label="Sick leave end date"
+                            type="date"
+                            value={sickLeaveEndDate}
+                            onChange={e => setSickLeaveEndDate(e.target.value)}
+                            fullWidth
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                    </>
+                }
 
                 <Grid>
                     <Grid item>

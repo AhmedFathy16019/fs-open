@@ -75,7 +75,6 @@ const newEntryParser = (req: Request<unknown, unknown, EntryWithoutId>, _res: Re
 
 const errorMiddleware = (error: unknown, _req: Request, res: Response, next: NextFunction) => {
     if (error instanceof z.ZodError) {
-        console.log(error);
         res.status(400).json({ error: error.issues });
     } else {
         next(error);
